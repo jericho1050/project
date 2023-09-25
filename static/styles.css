@@ -1,0 +1,197 @@
+/* color for navbar */
+navcolor {
+    background-color: #e3f2fd;
+}
+
+/* size logo */
+.size-logo {
+    width: 69px;
+    height: 69px;
+}
+
+.margin {
+    display: inline;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 36px;
+}
+
+.btn-primary {
+    display: inline;
+    height:36px;
+    width: 7%;
+    margin-left: -5px;
+    margin-top: -3px;
+}
+
+hr {
+    width: 69%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.popover {
+    position: relative;
+    display: inline-block;
+    width: 169px;
+    padding: 15px;
+}
+
+.popover-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 250px;
+    z-index: 2;
+}
+
+.popover:hover .popover-content {
+    display: inline;
+    margin-left: 20px;
+}
+
+.nutrition-label {
+    border: 2px solid #ccc;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    text-align: center;
+    font-weight: bold;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+footer {
+    margin-top: 69px;
+    color: green;
+}
+
+margin-footer {
+    margin: 69px 0;
+}
+
+p {
+    margin-bottom: 5px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.list-group {
+    width: 50%;
+    margin: auto;
+}
+
+.list-group hr {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.list-group h5, h4 {
+    color: green;
+}
+
+.right {
+    text-align: right;
+    width: 25%;
+}
+
+.gmail-logo img {
+    width: 20px;
+    height: 20px;
+    display: inline;
+    margin-left: 10px;
+    margin-top: -10px;
+    position: fixed;
+    bottom: 10px;
+}
+
+.custom-margin h6{
+    margin-left: -80px;
+    position: fixed;
+    bottom: 8px;
+}
+
+.footer div h5{
+    font-size: 13px;
+    position: fixed;
+    bottom: 28px;
+}
+
+h6 {
+    font-size: 10px;
+}
+
+h2 {
+    font-family: "Arial Rounded MT", sans-serif;
+    font-weight: bold;
+}
+
+.text-center h3 {
+    font-family: Chalkboard, cursive;
+}
+
+body::before {
+    content: "";
+    background-image: url('/static/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+body {
+    position: relative;
+    z-index: 1;
+}
+
+.loader {
+    transition: opacity 0.75s, visiblity 0.75s;
+}
+
+.loader-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.branded {
+    color: green;
+    font-size: 34px;
+    font-family: "Comic Sans MS";
+}
+
+.why-count p {
+    font-size: 12px;
+}
+
+
+
+
+
+
+

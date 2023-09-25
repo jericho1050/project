@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}
+ Nutrition Facts
+{% endblock %}
+
+{% block main %}
+<h2>Nutrition Facts</h2>
+    <div class="nutrition-label">
+        <h3>{{ result.name }}</h3>
+        {% set serving_size_value = None %}
+        {% set serving_size_unit = "g" %}
+        {% if result.serving_size %}
+            {% set serving_size_value = result.serving_size | float %}
+            {% set serving_size_unit = "g" %}  {# Default unit is "g" in case unit is missing #}
+            {% if result.serving_size | string != serving_size_value | string %}
+                {% set serving_size_parts = result.serving_size | string | split %}
+                {% if serving_size_parts | length == 2 %}
+                    {% set serving_size_value = serving_size_parts[0] %}
+                    {% set serving_size_unit = serving_size_parts[1] %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% if serving_size_value %}
+            <p>Serving Size: {{ "{:.2f}".format(serving_size_value) }} {{ serving_size_unit }}</p>
+        {% else %}
+            <p>Serving Size: 100g</p>
+        {% endif %}
+        <table>
+            <tr>
+                <th>Nutrient</th>
+                <th>Amount per Serving</th>
+                <th class="right">% Daily Value</th>
+            </tr>
+            {% for nutrient in result.nutrients if nutrient.name in ['Protein', 'Total lipid (fat)', 'Carbohydrate, by difference', 'Total Fat', 'Saturated fat', 'Cholesterol', 'Sodium', 'Potassium, K', 'Total Carbohydrate', 'Dietary fiber', 'Sugars, total including NLEA', 'Energy'] %}
+                <tr>
+                    <td><strong>{{ nutrient.name }}</strong></td>
+                    <td data-nutrient-value="{{ nutrient.value }} {{ nutrient.unit }}" data-nutrient-unit="{{ nutrient.unit }}"><strong>{{ nutrient.value }} {{ nutrient.unit }}</strong></td>
+                    <td></td>  {# Placeholder for daily value cell #}
+                </tr>
+            {% endfor %}
+            {# Loop for Micronutrients (Excluding Macronutrients) #}
+            <tr><th>Nutrient</th><th>Amount per Serving</th><th>Nutrient</th><th>Amount per Serving</th></tr>
+            {% for nutrient in result.nutrients|batch(2) if nutrient.name not in ['Protein', 'Total lipid (fat)', 'Carbohydrate, by difference'] and nutrient.name not in ['Total Fat', 'Saturated fat', 'Cholesterol', 'Sodium', 'Potassium', 'Total Carbohydrate', 'Dietary fiber', 'Sugar']%}
+                <tr>
+                    <td>{{ nutrient[0].name }}</td>
+                    <td data-nutrient-value="{{ nutrient[0].value }} {{ nutrient[0].unit }}" data-nutrient-unit="{{ nutrient[0].unit }}">{{ nutrient[0].value }} {{ nutrient[0].unit }}</td>
+                    {% if nutrient|length > 1 %}
+                        <td>{{ nutrient[1].name }}</td>
+                        <td data-nutrient-value="{{ nutrient[1].value }} {{ nutrient[1].unit }}" data-nutrient-unit="{{ nutrient[1].unit }}">{{ nutrient[1].value }} {{ nutrient[1].unit }}</td>
+                    {% else %}
+                        <td></td><td></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <br>
+    <form class="form-inline" action="/food-log" method="post">
+        <input type="hidden" name="food" value="{{ result.name }}">
+        {% if serving_size_value %}
+            <input id="serving-size-input" name="calories" placeholder="Serving Size" type="number" value="{{ serving_size_value }}" min="{{ serving_size_value }}" oninput="updateNutrients()">
+        {% else %}
+            <input id="serving-size-input" name="calories" placeholder="Serving Size" type="number" value="100" min="100" oninput="updateNutrients()">
+        {% endif %}
+        {% for nutrient in result.nutrients %}
+            <input type="hidden" name="{{ nutrient.name }}" value="{{ nutrient.value }}">
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Add to log</button>
+    </form>
+
+    <script>
+        function updateNutrients() {
+            const input = document.getElementById('serving-size-input');
+            const inputValue = parseFloat(input.value);
+            const nutrientRows = document.querySelectorAll('.nutrition-label table tr');
+    
+            nutrientRows.forEach(row => {
+                const nutrientValueCell = row.querySelector('td:nth-child(2)');
+                if (nutrientValueCell) {
+                    const originalValueText = nutrientValueCell.getAttribute('data-nutrient-value');
+                    const originalValueParts = originalValueText.split(' ');
+                    const originalValue = parseFloat(originalValueParts[0]);
+                    const unit = originalValueParts[1];
+
+                    if (!isNaN(originalValue)) {
+                        const updatedValue = (inputValue / {{ serving_size_value or 100 }}) * originalValue;
+                        nutrientValueCell.textContent = updatedValue.toFixed(2) + ' ' + unit;
+
+                        // Find the nutrient name in the same row
+                        const nutrientNameCell = row.querySelector('td:nth-child(1)');
+                        if (nutrientNameCell) {
+                            const nutrientName = nutrientNameCell.textContent.trim();
+                            const nutrientInput = document.querySelector(`input[name="${nutrientName}"]`);
+                            if (nutrientInput) {
+                                nutrientInput.value = updatedValue.toFixed(2);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+
+
+{% endblock %}
