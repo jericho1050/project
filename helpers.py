@@ -193,10 +193,11 @@ def get_nutritional_info_branded(fdc_ids, page):
     "SELECT food.description, food_nutrient.nutrient_id, food_nutrient.amount "
     "FROM food "
     "INNER JOIN food_nutrient ON food.fdc_id::text = food_nutrient.fdc_id::text "
-    "WHERE food.fdc_id::text = ? AND food_nutrient.nutrient_id IN (1008, 1003, 1004, 1005) "
+    "WHERE food.fdc_id::text = ?::text AND food_nutrient.nutrient_id IN (1008, 1003, 1004, 1005) "
     "ORDER BY nutrient_id DESC",
     str(i),  # Cast i to string
 )
+
 
                     if len(rows) == 4:
                         nutrient_info = {
