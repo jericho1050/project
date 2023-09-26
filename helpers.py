@@ -193,9 +193,11 @@ def get_nutritional_info_branded(fdc_ids, page):
     SELECT food.description, food_nutrient.nutrient_id, food_nutrient.amount
     FROM food
     INNER JOIN food_nutrient ON food.fdc_id = food_nutrient.fdc_id
-    WHERE food.fdc_id = ? AND food_nutrient.nutrient_id IN (?, ?, ?, ?)
+    WHERE food.fdc_id = %s AND food_nutrient.nutrient_id IN (1008, 1003, 1004, 1005)
     ORDER BY food_nutrient.nutrient_id DESC
-""", i, 1008, 1003, 1004, 1005)
+""", i)
+
+                    
 
 
                     if len(rows) == 4:
