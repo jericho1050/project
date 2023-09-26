@@ -12,10 +12,9 @@ from cs50 import SQL
 from flask import redirect, render_template, session
 from functools import wraps
 
-uri = os.getenv("DATABASE_URL")
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://")
-db = SQL(uri)
+DATABASE_URL = os.getenv(postgres://zsrebrpwzzhsqx:151f7162d7ca95501292b2d15b281d30d348e8ebbf400c7bb566816f8fe352ee@ec2-54-211-177-159.compute-1.amazonaws.com:5432/df41i5kkunpedt)
+
+db = SQL(DATABASE_URL)
 
 def apology(message, code=400):
     """Render message as an apology to user."""
