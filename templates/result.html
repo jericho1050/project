@@ -59,9 +59,9 @@
     <form class="form-inline" action="/food-log" method="post">
         <input type="hidden" name="food" value="{{ result.name }}">
         {% if serving_size_value %}
-            <input id="serving-size-input" name="calories" placeholder="Serving Size" type="number" value="{{ serving_size_value }}" min="{{ serving_size_value }}" oninput="updateNutrients()">
+            <input id="serving-size-input" name="calories" placeholder="Serving Size" type="number" value="{{ serving_size_value|int }}" min="1" oninput="updateNutrients()">
         {% else %}
-            <input id="serving-size-input" name="calories" placeholder="Serving Size" type="number" value="100" min="100" oninput="updateNutrients()">
+            <input id="serving-size-input" name="calories" placeholder="Serving Size" type="number" value="100" min="1" oninput="updateNutrients()">
         {% endif %}
         {% for nutrient in result.nutrients %}
             <input type="hidden" name="{{ nutrient.name }}" value="{{ nutrient.value }}">
