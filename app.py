@@ -296,7 +296,9 @@ def food_log():
         if food:
 
             # insert these values into our database
-            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", session["user_id"], food, calorie, protein, carbs, fat, month, day, year, hour, minute)
+            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+           (session["user_id"], food, calorie, protein, carbs, fat, month, day, year, hour, minute))
+
 
             return redirect("/")
 
@@ -310,7 +312,9 @@ def food_log():
         food_log_query = []
         # get the user's food intake for the last 7 days
         for i in range(7):
-            food_log_query.append(db.execute("SELECT SUM(COALESCE(calories, 0)) AS total_calories, SUM(COALESCE(protein, 0)) AS total_protein, SUM(COALESCE(carbs, 0)) AS total_carbs, SUM(COALESCE(fat, 0)) AS total_fat FROM food_count WHERE user_id = ? AND month = ? AND day = ? AND year = ?", session["user_id"], week_dates[i]["month"], week_dates[i]["day"], week_dates[i]["year"]))
+            query = "SELECT SUM(COALESCE(calories, 0)) AS total_calories, SUM(COALESCE(protein, 0)) AS total_protein, SUM(COALESCE(carbs, 0)) AS total_carbs, SUM(COALESCE(fat, 0)) AS total_fat FROM food_count WHERE user_id = %s AND month = %s AND day = %s AND year = %s"
+            food_log_query.append(db.execute(query, (session["user_id"], week_dates[i]["month"], week_dates[i]["day"], week_dates[i]["year"])))
+
 
         # Initialize variables to handle no data case
         food_log = None
