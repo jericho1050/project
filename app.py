@@ -296,8 +296,9 @@ def food_log():
         if food:
 
             # insert these values into our database
-            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-           (session["user_id"], food, calorie, protein, carbs, fat, month, day, year, hour, minute))
+            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
+              user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
+
 
 
             return redirect("/")
