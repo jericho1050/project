@@ -20,7 +20,7 @@ navcolor {
 .btn-style {
     display: inline;
     height:36px;
-    width: 7%;
+    max-width: 100%;
     margin-left: -5px;
     margin-top: -3px;
 }
