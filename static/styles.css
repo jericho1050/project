@@ -17,10 +17,10 @@ navcolor {
     height: 36px;
 }
 
-.btn-primary {
+.btn-style {
     display: inline;
     height:36px;
-    width: 7%;
+    max-width: 100%;
     margin-left: -5px;
     margin-top: -3px;
 }
@@ -96,6 +96,11 @@ p {
     text-align: center;
 }
 
+.email {
+    position: fixed;
+    bottom: 10px;
+}
+
 .list-group {
     width: 50%;
     margin: auto;
@@ -119,11 +124,12 @@ p {
 .gmail-logo img {
     width: 20px;
     height: 20px;
-    display: inline;
-    margin-left: 10px;
-    margin-top: -10px;
+    display: inline-block;
+    margin-left: -6%;
+    margin-right:auto;
+    margin-top: auto;
     position: fixed;
-    bottom: 10px;
+    bottom: 12px;
 }
 
 .custom-margin h6{

@@ -273,6 +273,9 @@ def food_log():
     if calorie is not None and protein is not None and carbs is not None and fat is not None:
         if not calorie.isdigit() or not is_float(protein) or not is_float(carbs) or not is_float(fat):
             return apology("Error invalid values!", 400)
+        
+        if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
+            return apology("Error Negative value detected!", 400)
 
 
     # Calcuate the date for last sunday (start of the week)
@@ -296,7 +299,10 @@ def food_log():
         if food:
 
             # insert these values into our database
-            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", session["user_id"], food, calorie, protein, carbs, fat, month, day, year, hour, minute)
+            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
+              user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
+
+
 
             return redirect("/")
 
@@ -310,7 +316,9 @@ def food_log():
         food_log_query = []
         # get the user's food intake for the last 7 days
         for i in range(7):
-            food_log_query.append(db.execute("SELECT SUM(COALESCE(calories, 0)) AS total_calories, SUM(COALESCE(protein, 0)) AS total_protein, SUM(COALESCE(carbs, 0)) AS total_carbs, SUM(COALESCE(fat, 0)) AS total_fat FROM food_count WHERE user_id = ? AND month = ? AND day = ? AND year = ?", session["user_id"], week_dates[i]["month"], week_dates[i]["day"], week_dates[i]["year"]))
+            food_log_query.append(db.execute("SELECT SUM(COALESCE(calories, 0)) AS total_calories, SUM(COALESCE(protein, 0)) AS total_protein, SUM(COALESCE(carbs, 0)) AS total_carbs, SUM(COALESCE(fat, 0)) AS total_fat FROM food_count WHERE user_id = %s AND month = %s AND day = %s AND year = %s", session["user_id"], week_dates[i]["month"], week_dates[i]["day"], week_dates[i]["year"]))
+
+
 
         # Initialize variables to handle no data case
         food_log = None
