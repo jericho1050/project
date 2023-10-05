@@ -282,6 +282,9 @@ def food_log():
     if calorie is not None and protein is not None and carbs is not None and fat is not None:
         if not calorie.isdigit() or not is_float(protein) or not is_float(carbs) or not is_float(fat):
             return apology("Error invalid values!", 400)
+        
+        if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
+            return apology("Error Negative value detected!", 400)
 
         if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
             return apology("Error Negative value detected!", 400)
