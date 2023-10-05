@@ -1,12 +1,12 @@
 import os
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, url_for, session
+from flask import Flask, flash, redirect, render_template, request, url_for, session, make_response
 from flask_caching import Cache
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, timedelta
-from helpers import apology, login_required, lookup_nutritional_info, search_food, get_nutritional_info, is_float, search_food_branded, get_nutritional_info_branded
+from helpers import apology, login_required, lookup_nutritional_info, search_food, get_nutritional_info, is_float, search_food_branded, get_nutritional_info_branded, generate_sitemap_function
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
@@ -45,6 +45,15 @@ def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
+    return response
+
+@app.route('/sitemap.xml')
+def generate_sitemap():
+    sitemap_xml = generate_sitemap_function()
+
+    response = make_response(sitemap_xml)
+    response.headers['Content-Type'] = 'application/xml'
+
     return response
 
 @app.route("/", methods=["GET", "POST"])
@@ -273,7 +282,7 @@ def food_log():
     if calorie is not None and protein is not None and carbs is not None and fat is not None:
         if not calorie.isdigit() or not is_float(protein) or not is_float(carbs) or not is_float(fat):
             return apology("Error invalid values!", 400)
-        
+
         if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
             return apology("Error Negative value detected!", 400)
 
