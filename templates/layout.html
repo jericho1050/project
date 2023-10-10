@@ -13,6 +13,23 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js" ></script>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+        <!-- structureed data google(Improves display of website in search results) -->
+        <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebApplication",
+          "name": "Calorie Counter",
+          "description": "A web application for tracking calorie intake (with a bar graph) and nutritional information",
+          "url": "https://desttrack.me/login",
+          "applicationCategory": "Health",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://desttrack.me/results?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }      
+        </script>
+
         <!-- include font awesome to my html-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
