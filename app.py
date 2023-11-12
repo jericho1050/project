@@ -57,7 +57,6 @@ def generate_sitemap():
     return response
 
 @app.route("/", methods=["GET", "POST"])
-@login_required
 def index():
     """ displays search form"""
     if request.method == "POST":
