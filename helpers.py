@@ -90,6 +90,7 @@ def search_food(query, api_key, page, page_size):
 
     data = response.json()
     search_results = []
+    total_hits = data.get('totalHits', 0)
 
     if 'foods' in data:
         for food in data['foods']:
@@ -100,7 +101,7 @@ def search_food(query, api_key, page, page_size):
                 "fdc_id": fdc_id,
             })
 
-    return search_results
+    return search_results, total_hits
 
 
 
