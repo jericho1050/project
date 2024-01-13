@@ -172,9 +172,10 @@ def is_float(str):
 def search_food_branded(q):
 
     # query the large database for branded
-    search_results = db.execute("SELECT * FROM food WHERE description ILIKE ?", (q + "%",))
+    search_results = db.execute("SELECT * FROM food WHERE description LIKE ?", (q + "%",))
+    total_hits = db.execute("SELECT COUNT(*) FROM food WHERE description LIKE ?", (q + "%",))
 
-    return search_results
+    return search_results, total_hits
 
 def get_nutritional_info_branded(fdc_ids, page):
     """gets the macros and calories for the individual foods """
