@@ -83,7 +83,8 @@ def results():
         return apology("Query parameter missing", 400)
 
     # searches food with pagination
-    results = search_food(query, api_key, page=page, page_size=page_size)
+    results, total_hits = search_food(query, api_key, page=page, page_size=page_size)
+    total_pages = -(-total_hits // page_size)  # Calculate total pages, use double negative for ceiling division
 
     # check if user has typed something
     if results and query:
@@ -105,7 +106,7 @@ def results():
                     "carbs": food["carbs"]
                 })
 
-            return render_template("results.html", results=nutritional_info, query=query, page=page, page_size=page_size)
+            return render_template("results.html", results=nutritional_info, query=query, page=page, page_size=page_size, total_pages=total_pages)
         else:
             return apology("Sorry, something went wrong", 400)
     else:
@@ -119,13 +120,16 @@ def results_branded():
     """ returns list of food for matched query but BRANDED data type """
     page = request.args.get('page', 1, type=int)
     query = request.args.get("q")
+    page_size = 6
     fdc_ids = []
 
 
     if not query:
         return apology("Query parameter missing", 400)
 
-    results = search_food_branded(query)
+    results, total_hits = search_food_branded(query)
+    total_pages = -(-total_hits // page_size)  # Calculate total pages, use double negative for ceiling division
+
 
     if results:
         nutritional_info = []
@@ -144,13 +148,14 @@ def results_branded():
                     "carbs": food["carbs"]
                 })
 
-            return render_template("results-branded.html", results=nutritional_info, query=query, page=page, page_size=15)
+            return render_template("results-branded.html", results=nutritional_info, query=query, page=page, page_size=15, total_pages=total_pages)
 
         else:
             return apology("Sorry, there is no more data to show.", 404)
 
     else:
         return apology("No match found", 404)
+
 
 
 
