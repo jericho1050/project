@@ -31,17 +31,6 @@ if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
 db = SQL(uri)
 
-# Connect to your postgres DB
-conn = psycopg2.connect(uri)
-
-# Open a cursor to perform database operations
-curs = conn.cursor()
-
-# Execute a command: this creates a new table
-curs.execute("ROLLBACK")
-
-# Commit the transaction
-conn.commit()
 
 
 # gets the current date/time
