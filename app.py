@@ -313,7 +313,8 @@ def result():
         'Vitamin E, added': 15,  # in mg
         'Vitamin B-12 (cobalamin)': 2.4,  # in µg
         'Vitamin D': 20,  # in µg
-        'Vitamin A': 900,  # in µg
+        'Vitamin A': 900,
+        'Vitamin A, IU': 900,  # in µg
         'Vitamin E': 15,  # in mg
         'Vitamin D2 (ergocalciferol)': 20,  # in µg
         'Vitamin D3 (cholecalciferol)': 20,  # in µg
