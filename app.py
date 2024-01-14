@@ -360,7 +360,7 @@ def result():
 def food_log():
     """ User's food log or diet history """
     food = request.form.get("food")
-    calorie = request.form.get("calories")
+    calorie = request.form.get("Energy")
     protein = request.form.get("Protein")
     carbs = request.form.get("Carbohydrate, by difference")
     fat = request.form.get("Total lipid (fat)")
