@@ -30,7 +30,6 @@ EditorConfig==0.12.3
 Flask==2.3.3
 Flask-Caching==2.0.2
 Flask-Session==0.5.0
-Flask-SQLAlchemy
 fonttools==4.42.1
 gunicorn
 greenlet==2.0.2

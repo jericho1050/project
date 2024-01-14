@@ -3,7 +3,6 @@ from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, url_for, session, make_response
 from flask_caching import Cache
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, timedelta
@@ -14,7 +13,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
-
 
 # Configure application
 app = Flask(__name__)
@@ -28,18 +26,7 @@ Session(app)
 uri = os.getenv("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
-    
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-db = SQLAlchemy(app)
-
-try:
-    # Your DB operations here
-    db.session.commit()
-except Exception:
-    db.session.rollback()
-    raise
-finally:
-    db.session.close()
+db = SQL(uri)
 
 # gets the current date/time
 current_date = datetime.now()
@@ -141,7 +128,7 @@ def results_branded():
         return apology("Query parameter missing", 400)
 
     results, total_hits = search_food_branded(query)
-    total_pages = -(-len(total_hits) // page_size)  # Calculate total pages, use double negative for ceiling division
+    total_pages = -(-total_hits // page_size)  # Calculate total pages, use double negative for ceiling division
 
 
     if results:
@@ -326,8 +313,7 @@ def result():
         'Vitamin E, added': 15,  # in mg
         'Vitamin B-12 (cobalamin)': 2.4,  # in µg
         'Vitamin D': 20,  # in µg
-        'Vitamin A': 900,
-        'Vitamin A, IU': 900,  # in µg
+        'Vitamin A': 900,  # in µg
         'Vitamin E': 15,  # in mg
         'Vitamin D2 (ergocalciferol)': 20,  # in µg
         'Vitamin D3 (cholecalciferol)': 20,  # in µg
@@ -393,7 +379,8 @@ def food_log():
         if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
             return apology("Error Negative value detected!", 400)
 
-    # Calcuate the date for last sunday (start of the week)
+
+     # Calcuate the date for last sunday (start of the week)
     prev_sunday = current_date - timedelta(days=current_date.weekday() + 1)
 
     # Initialize a list to store the dates for the entire week
@@ -418,8 +405,9 @@ def food_log():
               user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
 
 
+
             return redirect("/")
-    
+
         else:
             return apology("Error", 400)
 
