@@ -13,8 +13,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
-from sqlalchemy import exc
-
 
 # Configure application
 app = Flask(__name__)
@@ -396,19 +394,19 @@ def food_log():
             "year": day_date.year
         })
 
+    # if user reached POST (as by submitting a form via POST)
     if request.method == "POST":
+
         # if the user has submitted with values for these nutrients.
         if food:
-            try:
-                # insert these values into our database
-                db.session.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
-                {"user_id": session["user_id"], "food_name": food, "calories": calorie, "protein": protein, "carbs": carbs, "fat": fat, "month": month, "day": day, "year": year, "hour": hour, "minute": minute})
-                db.session.commit()
-                return redirect("/")
-            except exc.SQLAlchemyError:
-                db.session.rollback()
-                # Log the exception and handle it appropriately
-                return apology("Database error", 500)
+
+            # insert these values into our database
+            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
+              user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
+
+
+            return redirect("/")
+
         else:
             return apology("Error", 400)
 
