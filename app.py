@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
+import psycopg2
 
 
 # Configure application
@@ -30,8 +31,16 @@ if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
 db = SQL(uri)
 
+# Connect to your postgres DB
+conn = psycopg2.connect(uri)
+
+# Open a cursor to perform database operations
 curs = conn.cursor()
+
+# Execute a command: this creates a new table
 curs.execute("ROLLBACK")
+
+# Commit the transaction
 conn.commit()
 
 
