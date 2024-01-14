@@ -265,7 +265,7 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-@app.route("/details", methods=["POST"])
+@app.route("/details", methods=["GET", "POST"])
 @login_required
 def result():
     """ display's the selected food's nutrition facts """
