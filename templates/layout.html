@@ -78,19 +78,23 @@
         <main class="container-fluid py-5 text-center">
             {% block main %}{% endblock %}
         </main>
-    </body>
-    {% if request.path not in ['/details', '/results'] %}
-    <footer class="footer">
-        <div class="row justify-content-center">
+        {% if request.path not in ['/details', '/results', '/results-branded'] %}
+        <footer class="footer">
             <h5 class="text-center">Contact Developer</h5>
-            <div class="col-sm-1">
-                <a class="gmail-logo">
-                    <img src="static/Gmail.png" alt="Gmail">
-                </a>
+            <div class="container index">
+
+                <div class="row align-items-end">
+                    <div class="col-2">
+                        <img class="gmail-logo" src="static/Gmail.png" alt="Gmail">
+                    </div>
+                    <div class="col-4">
+                        <h6>jerichokunserrano@gmail.com</h6>
+                    </div>
+                </div>
+              </div>
             </div>
-            <h6 class="text-center email">jerichokunserrano@gmail.com</h6>
-        </div>
-    </footer>
-    {% endif %}
+        </footer>
+        {% endif %}
+    </body>
 
 </html>
