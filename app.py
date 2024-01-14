@@ -366,15 +366,19 @@ def food_log():
     fat = request.form.get("Total lipid (fat)")
 
     if calorie is not None and protein is not None and carbs is not None and fat is not None:
-        if not calorie.isdigit() or not is_float(protein) or not is_float(carbs) or not is_float(fat):
+        try:
+            calorie = float(calorie)
+            protein = float(protein)
+            carbs = float(carbs)
+            fat = float(fat)
+        except ValueError:
             return apology("Error invalid values!", 400)
         
-        if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
-            return apology("Error Negative value detected!", 400)
+        if not is_float(calorie) or not is_float(protein) or not is_float(carbs) or not is_float(fat):
+            return apology("Error invalid values!", 400)
 
         if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
             return apology("Error Negative value detected!", 400)
-
 
     # Calcuate the date for last sunday (start of the week)
     prev_sunday = current_date - timedelta(days=current_date.weekday() + 1)
