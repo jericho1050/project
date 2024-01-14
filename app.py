@@ -15,7 +15,6 @@ import base64
 from io import BytesIO
 import psycopg2
 
-
 # Configure application
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
@@ -29,8 +28,6 @@ uri = os.getenv("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
 db = SQL(uri)
-
-
 
 # gets the current date/time
 current_date = datetime.now()
@@ -317,8 +314,7 @@ def result():
         'Vitamin E, added': 15,  # in mg
         'Vitamin B-12 (cobalamin)': 2.4,  # in µg
         'Vitamin D': 20,  # in µg
-        'Vitamin A': 900,
-        'Vitamin A, IU': 900,  # in µg
+        'Vitamin A': 900,  # in µg
         'Vitamin E': 15,  # in mg
         'Vitamin D2 (ergocalciferol)': 20,  # in µg
         'Vitamin D3 (cholecalciferol)': 20,  # in µg
@@ -384,7 +380,8 @@ def food_log():
         if int(calorie) < 0 or float(protein) < 0 or float(carbs) < 0 or float(fat) < 0:
             return apology("Error Negative value detected!", 400)
 
-    # Calcuate the date for last sunday (start of the week)
+
+     # Calcuate the date for last sunday (start of the week)
     prev_sunday = current_date - timedelta(days=current_date.weekday() + 1)
 
     # Initialize a list to store the dates for the entire week
@@ -409,8 +406,9 @@ def food_log():
               user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
 
 
+
             return redirect("/")
-    
+
         else:
             return apology("Error", 400)
 
