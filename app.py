@@ -401,9 +401,9 @@ def food_log():
         if food:
             try:
                 # insert these values into our database
-                db.session.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
+                db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
                 {"user_id": session["user_id"], "food_name": food, "calories": calorie, "protein": protein, "carbs": carbs, "fat": fat, "month": month, "day": day, "year": year, "hour": hour, "minute": minute})
-                db.session.commit()
+                db.commit()
                 return redirect("/")
             except exc.SQLAlchemyError:
                 db.session.rollback()
