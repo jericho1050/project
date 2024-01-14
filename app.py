@@ -420,8 +420,8 @@ def food_log():
         # get the user's food intake for the last 7 days
         for i in range(7):
             food_log_query.append(db.execute("SELECT SUM(COALESCE(calories, 0)) AS total_calories, SUM(COALESCE(protein, 0)) AS total_protein, SUM(COALESCE(carbs, 0)) AS total_carbs, SUM(COALESCE(fat, 0)) AS total_fat FROM food_count WHERE user_id = %s AND month = %s AND day = %s AND year = %s", session["user_id"], week_dates[i]["month"], week_dates[i]["day"], week_dates[i]["year"]))
-
-
+            
+        print(food_log_query)
 
         # Initialize variables to handle no data case
         food_log = None
