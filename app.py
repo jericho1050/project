@@ -3,7 +3,6 @@ from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, url_for, session, make_response
 from flask_caching import Cache
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, timedelta
