@@ -270,7 +270,88 @@ def result():
     """ display's the selected food's nutrition facts """
     food = request.form.get("food_name")
     result=lookup_nutritional_info(food, api_key)
-    return render_template("result.html", result=result)
+
+    nutrients = {}
+    if result is not None:
+        for nutrient in result.get("nutrients", []):
+            nutrients[nutrient["name"]] = {
+                "value": nutrient["value"],
+                "unit": nutrient["unit"]
+            }
+
+    # recommended daily value micro and macro nutrients for adults
+    daily_values = {
+        'Energy': 2000,  # in kcal
+        'Total lipid (fat)': 70,  # in g
+        'Fatty acids, total saturated': 20,  # in g
+        'Fatty acids, total trans': 2,  # in g
+        'Cholesterol': 300,  # in mg
+        'Sodium, Na': 2300,  # in mg
+        'Carbohydrate, by difference': 310,  # in g
+        'Fiber, total dietary': 25,  # in g
+        'Sugars, total including NLEA': 50,  # in g
+        'Protein': 50,  # in g
+        'Vitamin A, RAE': 900,  # in µg
+        'Vitamin C, total ascorbic acid': 90,  # in mg
+        'Vitamin D (D2 + D3)': 20,  # in µg
+        'Vitamin E (alpha-tocopherol)': 15,  # in mg
+        'Vitamin K (phylloquinone)': 120,  # in µg
+        'Thiamin': 1.2,  # in mg
+        'Riboflavin': 1.3,  # in mg
+        'Niacin': 16,  # in mg
+        'Pantothenic acid': 5,  # in mg
+        'Vitamin B-6': 1.7,  # in mg
+        'Folate, total': 400,  # in µg
+        'Vitamin B-12': 2.4,  # in µg
+        'Vitamin B-12, added': 2.4,  # in µg
+        'Choline, total': 550,  # in mg
+        'Vitamin K (Dihydrophylloquinone)': 120,  # in µg
+        'Folic acid': 400,  # in µg
+        'Folate, food': 400,  # in µg
+        'Folate, DFE': 600,  # in µg
+        'Betaine': 2000,  # in mg
+        'Vitamin E, added': 15,  # in mg
+        'Vitamin B-12 (cobalamin)': 2.4,  # in µg
+        'Vitamin D': 20,  # in µg
+        'Vitamin A': 900,  # in µg
+        'Vitamin E': 15,  # in mg
+        'Vitamin D2 (ergocalciferol)': 20,  # in µg
+        'Vitamin D3 (cholecalciferol)': 20,  # in µg
+        'Vitamin A (IU)': 3000,  # in IU
+        'Vitamin D (IU)': 800,  # in IU
+        'Vitamin E (IU)': 22,  # in IU
+        'Vitamin C': 90,  # in mg
+        'Biotin': 30,  # in µg
+        'Calcium, Ca': 1300,  # in mg
+        'Iron, Fe': 18,  # in mg
+        'Magnesium, Mg': 420,  # in mg
+        'Zinc, Zn': 11,  # in mg
+        'Copper, Cu': 0.9,  # in mg
+        'Manganese, Mn': 2.3,  # in mg
+        'Selenium, Se': 55,  # in µg
+        'Chromium, Cr': 35,  # in µg
+        'Molybdenum, Mo': 45,  # in µg
+        'Chloride, Cl': 2300,  # in mg
+        'Potassium, K': 4700,  # in mg
+        'Phosphorus, P': 1250,  # in mg
+        'Iodine, I': 150,  # in µg
+        'Vitamin B-12, added': 2.4,  # in µg
+        'Vitamin D (D2 + D3), added': 20,  # in µg
+        'Vitamin E (added)': 15,  # in mg
+        'Vitamin B-6, added': 1.7,  # in mg
+        'Vitamin K (Menaquinone-4)': 120,  # in µg
+        'Vitamin K (Menaquinone-7)': 120,  # in µg
+        'Vitamin A, added': 900,  # in µg
+        'Vitamin C, added': 90,  # in mg
+        'Vitamin D2, added': 20,  # in µg
+        'Vitamin D3, added': 20,  # in µg
+        'Vitamin E, added': 15,  # in mg
+        'Vitamin K, added': 120,  # in µg
+        'Vitamin B-12 (Cyanocobalamin)': 2.4,  # in µg
+        }
+
+    
+    return render_template("result.html", result=result, nutrient=nutrients, daily_values=daily_values)
 
 
 @app.route("/food-log", methods=["GET", "POST"])

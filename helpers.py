@@ -172,7 +172,7 @@ def is_float(str):
 def search_food_branded(q):
 
     # query the large database for branded
-    search_results = db.execute("SELECT * FROM food WHERE description LIKE ?", (q + "%",))
+    search_results = db.execute("SELECT * FROM food WHERE description ILIKE ?", (q + "%",))
     total_hits = db.execute("SELECT COUNT(*) FROM food WHERE description LIKE ?", (q + "%",))
 
     return search_results, total_hits
