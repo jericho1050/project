@@ -28,18 +28,12 @@ Session(app)
 uri = os.getenv("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
-    
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-db = SQLAlchemy(app)
+db = SQL(uri)
 
-try:
-    # Your DB operations here
-    db.session.commit()
-except Exception:
-    db.session.rollback()
-    raise
-finally:
-    db.session.close()
+curs = conn.cursor()
+curs.execute("ROLLBACK")
+conn.commit()
+
 
 # gets the current date/time
 current_date = datetime.now()
