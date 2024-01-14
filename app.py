@@ -30,9 +30,9 @@ if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
 db = SQL(uri)
 
-# curs = conn.cursor()
-# curs.execute("ROLLBACK")
-# conn.commit()
+curs = conn.cursor()
+curs.execute("ROLLBACK")
+conn.commit()
 
 
 # gets the current date/time
