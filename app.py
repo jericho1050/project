@@ -128,7 +128,7 @@ def results_branded():
         return apology("Query parameter missing", 400)
 
     results, total_hits = search_food_branded(query)
-    total_pages = -(-total_hits // page_size)  # Calculate total pages, use double negative for ceiling division
+    total_pages = -(-len(total_hits) // page_size)  # Calculate total pages, use double negative for ceiling division
 
 
     if results:
@@ -406,7 +406,7 @@ def food_log():
 
 
             return redirect("/")
-
+    
         else:
             return apology("Error", 400)
 
