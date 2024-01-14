@@ -3,6 +3,7 @@ from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, url_for, session, make_response
 from flask_caching import Cache
 from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, timedelta
@@ -13,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
+
 
 # Configure application
 app = Flask(__name__)
@@ -26,7 +28,18 @@ Session(app)
 uri = os.getenv("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
-db = SQL(uri)
+    
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
+db = SQLAlchemy(app)
+
+try:
+    # Your DB operations here
+    db.session.commit()
+except Exception:
+    db.session.rollback()
+    raise
+finally:
+    db.session.close()
 
 # gets the current date/time
 current_date = datetime.now()
