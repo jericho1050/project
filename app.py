@@ -396,18 +396,21 @@ def food_log():
             "year": day_date.year
         })
 
-    # if user reached POST (as by submitting a form via POST)
     if request.method == "POST":
-
         # if the user has submitted with values for these nutrients.
-        try:
-            # Your database operation here
-            db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
-                    user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
-            db.commit()
-        except exc.SQLAlchemyError:
-            db.rollback()
-            # Log the exception and handle it appropriately
+        if food:
+            try:
+                # insert these values into our database
+                db.session.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
+                {"user_id": session["user_id"], "food_name": food, "calories": calorie, "protein": protein, "carbs": carbs, "fat": fat, "month": month, "day": day, "year": year, "hour": hour, "minute": minute})
+                db.session.commit()
+                return redirect("/")
+            except exc.SQLAlchemyError:
+                db.session.rollback()
+                # Log the exception and handle it appropriately
+                return apology("Database error", 500)
+        else:
+            return apology("Error", 400)
 
     # if the user reached GET (as by clicking food_log)
     else:
