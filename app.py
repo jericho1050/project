@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
+from sqlalchemy import exc
+
 
 # Configure application
 app = Flask(__name__)
@@ -398,18 +400,14 @@ def food_log():
     if request.method == "POST":
 
         # if the user has submitted with values for these nutrients.
-        if food:
-
-            # insert these values into our database
+        try:
+            # Your database operation here
             db.execute("INSERT INTO food_count(user_id, food_name, calories, protein, carbs, fat, month, day, year, hour, minute) VALUES(:user_id, :food_name, :calories, :protein, :carbs, :fat, :month, :day, :year, :hour, :minute)",
-              user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
-
-
-
-            return redirect("/")
-
-        else:
-            return apology("Error", 400)
+                    user_id=session["user_id"], food_name=food, calories=calorie, protein=protein, carbs=carbs, fat=fat, month=month, day=day, year=year, hour=hour, minute=minute)
+            db.commit()
+        except exc.SQLAlchemyError:
+            db.rollback()
+            # Log the exception and handle it appropriately
 
     # if the user reached GET (as by clicking food_log)
     else:
