@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
-import psycopg2
 
 # Configure application
 app = Flask(__name__)
